@@ -34,7 +34,7 @@
   </table>
 
   <script>
-    const apiBase = "http://localhost:80/tp-flightphp-crud/ws";
+    const apiBase = "http://localhost:8888/tp-flightphp-crud/ws";
 
     function ajax(method, url, data, callback) {
       const xhr = new XMLHttpRequest();
@@ -77,16 +77,9 @@
       const email = document.getElementById("email").value;
       const age = document.getElementById("age").value;
 
-      let data = `nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}&age=${age}`;
+      const data = `nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}&age=${age}`;
+
       if (id) {
-        // data={
-        //   nom:nom,
-        //   prenom:prenom,
-        //   email: email,
-        //   age: age
-        // }
-      //  data = `id=${encodeURIComponent(id)}&nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}&age=${age}`;
-        // console.log(data)
         ajax("PUT", `/etudiants/${id}`, data, () => {
           resetForm();
           chargerEtudiants();
