@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Liste des prêts</title>
+  <link rel="stylesheet" href="<?= STATIC_URL ?>/css/main.css">
+    <link rel="stylesheet" href="<?= STATIC_URL ?>/css/components.css">
+    <link rel="stylesheet" href="<?= STATIC_URL ?>/css/forms.css">
+    <link rel="stylesheet" href="<?= STATIC_URL ?>/css/tables.css">
   <style>
     body { font-family: sans-serif; padding: 20px; }
     table { border-collapse: collapse; width: 100%; margin-top: 20px; }
@@ -11,6 +15,8 @@
   </style>
 </head>
 <body>
+
+    <?php include"navbar.php"?>
 
     <h1>Liste des prêts</h1>
     <a href="<?= BASE_URL ?>/demande_form_view">Ajouter une demande de pret</a>
@@ -60,7 +66,7 @@
     const apiBase = "<?= API_URL ?>";
     
   </script>
-  <script src="<?= STATIC_URL ?>/script.js">
+  <script src="<?= STATIC_URL ?>/js/script.js">
     
   </script>
   <script>

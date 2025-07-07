@@ -8,3 +8,13 @@ Flight::route('GET /demande_prets/@id', [$demandePretController, 'getOne']);
 Flight::route('POST /demande_prets/create', [$demandePretController, 'create']);
 Flight::route('PUT /demande_prets/@id', [$demandePretController, 'update']);
 Flight::route('DELETE /demande_prets/@id', [$demandePretController, 'delete']);
+
+
+Flight::route('GET /demandes/filtrer', [$demandePretController, 'getAllDemandeWithStatutFiltre']);
+Flight::route('GET /demandes/non-valide', [$demandePretController, 'getAllDemandeNonValide']);
+Flight::route('POST /demandes', [$demandePretController, 'valider']);
+Flight::route('POST /demandes/rejeter', [$demandePretController, 'rejeter']); // Nouvelle route
+
+Flight::route('GET /', function() {
+    Flight::render('demandes_non_valide.php');
+});

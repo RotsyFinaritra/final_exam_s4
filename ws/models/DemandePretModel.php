@@ -119,5 +119,53 @@ class DemandePretModel extends BaseModel
     {
         return $this->execute("DELETE FROM demande_pret WHERE id = ?", [$id]);
     }
+
+    public function getAllDemandeNonvalide()
+    {
+        $sql = "
+        SELECT dp.*
+        FROM demande_pret dp
+        WHERE dp.id_statut_demande = 1 
+    ";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllDemandewithStatutFiltre($date_debut, $date_fin, $statut)
+    {
+        $sql = "SELECT dp.* FROM demande_pret dp WHERE 1=1";
+        $params = [];
+    
+        // Filtre par statut
+        if (!empty($statut)) {
+            $sql .= " AND dp.id_statut_demande = :statut";
+            $params[':statut'] = $statut;
+        }
+    
+        // Filtre par date - gestion des cas partiels
+        if (!empty($date_debut) && !empty($date_fin)) {
+            // Les deux dates sont fournies
+            $sql .= " AND dp.date_demande BETWEEN :date_debut AND :date_fin";
+            $params[':date_debut'] = $date_debut;
+            $params[':date_fin'] = $date_fin;
+        } elseif (!empty($date_debut)) {
+            // Seulement date de début
+            $sql .= " AND dp.date_demande >= :date_debut";
+            $params[':date_debut'] = $date_debut;
+        } elseif (!empty($date_fin)) {
+            // Seulement date de fin
+            $sql .= " AND dp.date_demande <= :date_fin";
+            $params[':date_fin'] = $date_fin;
+        }
+    
+        // Optionnel : ordre par date de demande
+        $sql .= " ORDER BY dp.date_demande DESC";
+    
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+    
+        return $stmt->fetchAll();
+    }
 }
 ?>

@@ -1,11 +1,57 @@
 <?php
 require_once __DIR__ . '/../models/DemandePretModel.php';
+require_once __DIR__ . '/../models/DemandeStatutDemmandeModel.php';
 
 class DemandePretController {
     private $demandePretModel;
+    private $demandeStatutModel;
+
 
     public function __construct() {
         $this->demandePretModel = new DemandePretModel();
+        $this->demandeStatutModel= new DemandeStatutDemmandeModel();
+    }
+    public function getAllDemandeWithStatutFiltre() {
+        $request = Flight::request()->query;
+        $date_debut = $request['date_debut'] ?? null;
+        // echo $date_debut;
+        
+        $date_fin = $request['date_fin'] ?? null;
+        // echo $date_fin;
+        $statut = $request['statut'] ?? null;
+
+        $result = $this->demandePretModel->getAllDemandewithStatutFiltre($date_debut, $date_fin, $statut);
+        Flight::json($result);
+    }
+
+    public function getAllDemandeNonValide() {
+        $result = $this->demandePretModel->getAllDemandeNonvalide();
+        Flight::json($result);
+    }
+
+    public function valider() {
+        $data = Flight::request()->data;
+        $id = $data['id'];
+        //quand on cree une demande on ajoude dans demande_statut_demande 
+        //l'association demande-statut
+        $data['id_statut_demande']=2;
+        $id_statut_valide=2;
+         $idStatut = $id_statut_valide; 
+         $this->demandePretModel->update($id,$data);
+        $this->demandeStatutModel->addStatutToDemande($id, $idStatut);
+        Flight::json(['message' => 'Demande créée avec succès', 'id' => $id]);
+    }
+    public function rejeter() {
+        $data = Flight::request()->data;
+        $id = $data['id'];
+        //quand on cree une demande on ajoude dans demande_statut_demande 
+        //l'association demande-statut
+        $data['id_statut_demande']=3;
+        $id_statut_valide=3;
+         $idStatut = $id_statut_valide; 
+         $this->demandePretModel->update($id,$data);
+        $this->demandeStatutModel->addStatutToDemande($id, $idStatut);
+        Flight::json(['message' => 'Demande créée avec succès', 'id' => $id]);
     }
 
     public function getAll() {
@@ -35,7 +81,7 @@ class DemandePretController {
 
         $result = $this->demandePretModel->insert($data);
         if ($result) {
-            
+
             Flight::json(['success' => $result], 200);
         } else {
             Flight::json(['error' => 'Erreur lors de la création de la demande'], 500);
