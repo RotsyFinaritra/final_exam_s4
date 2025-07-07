@@ -88,3 +88,14 @@ INSERT INTO remboursement (id_pret, montant, date_remboursement) VALUES
 (1, 5000.00, '2025-05-01'),
 (1, 5000.00, '2025-06-01'),
 (2, 4166.67, '2025-03-01');
+
+
+-- Historique des statuts pour prêt 1
+INSERT INTO pret_statut_pret (id_pret, id_statut_pret, date) VALUES
+(1, 1, '2025-04-01'), -- En cours à la création
+(1, 3, '2025-07-01'); -- Devient en retard
+
+-- Historique des statuts pour prêt 2
+INSERT INTO pret_statut_pret (id_pret, id_statut_pret, date) VALUES
+(2, 1, '2025-02-15'), -- En cours
+(2, 2, '2026-03-01'); -- Devient remboursé
