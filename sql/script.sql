@@ -91,6 +91,15 @@ CREATE TABLE statut_pret (
     nom VARCHAR(100) NOT NULL
 );
 
+CREATE OR REPLACE TABLE pret_statut_pret(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_pret INT,
+    id_statut_pret INT,
+    date DATE,
+    FOREIGN KEY (id_pret) REFERENCES pret(id),
+    FOREIGN KEY (id_statut_pret) REFERENCES statut_pret(id)
+)
+
 -- Table statut_demande
 CREATE TABLE statut_demande (
     id INT AUTO_INCREMENT PRIMARY KEY,
