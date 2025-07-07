@@ -1,3 +1,4 @@
+-- Active: 1751603531872@@127.0.0.1@3306@final_exam_s4
 CREATE DATABASE final_exam_s4;
 -- Table capital
 CREATE TABLE capital (
@@ -103,7 +104,7 @@ CREATE TABLE demande_pret (
     date_demande DATE NOT NULL,
     duree_demande INT NOT NULL,
     montant DECIMAL(15,2) NOT NULL,
-    id_statut_demande,
+    id_statut_demande int,
     id_type_remboursement int,
     FOREIGN KEY (id_type_remboursement) REFERENCES type_remboursement(id),
     FOREIGN KEY (id_client) REFERENCES client(id),
