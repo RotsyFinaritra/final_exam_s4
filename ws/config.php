@@ -1,6 +1,6 @@
 <?php
 // URL racine (ex: /ws si ton projet est http://localhost/ws)
-define('BASE_URL', '/ws');
+define('BASE_URL', '/exam_final_s4/banque/ws');
 
 // Config de la base de données si besoin :
 // define('DB_HOST', 'localhost');

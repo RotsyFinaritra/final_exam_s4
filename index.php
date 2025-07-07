@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/ws/config.php'; ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -32,6 +34,8 @@
     </thead>
     <tbody></tbody>
   </table>
+
+  <a href="<?php echo BASE_URL ?>/">Test</a>
 
   <script>
     const apiBase = "http://localhost:8888/tp-flightphp-crud/ws";

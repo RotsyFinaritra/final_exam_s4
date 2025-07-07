@@ -1,35 +1,37 @@
 <?php
 require_once __DIR__ . '/../models/Etudiant.php';
-require_once __DIR__ . '/../helpers/Utils.php';
-
-
 
 class EtudiantController {
-    public static function getAll() {
-        $etudiants = Etudiant::getAll();
-        Flight::json($etudiants);
+    private $etudiantModel;
+
+    public function __construct() {
+        $this->etudiantModel = new Etudiant();
     }
 
-    public static function getById($id) {
-        $etudiant = Etudiant::getById($id);
-        Flight::json($etudiant);
+    public function getAll() {
+        $data = $this->etudiantModel->getAll();
+        Flight::json($data);
     }
 
-    public static function create() {
+    public function getById($id) {
+        $data = $this->etudiantModel->getById($id);
+        Flight::json($data);
+    }
+
+    public function create() {
         $data = Flight::request()->data;
-        $id = Etudiant::create($data);
-        $dateFormatted = Utils::formatDate('2025-01-01');
+        $id = $this->etudiantModel->create($data);
         Flight::json(['message' => 'Étudiant ajouté', 'id' => $id]);
     }
 
-    public static function update($id) {
-        $data = Flight::request()->data;
-        Etudiant::update($id, $data);
+    public function update($id) {
+        parse_str(Flight::request()->getBody(), $data);
+        $this->etudiantModel->update($id, $data);
         Flight::json(['message' => 'Étudiant modifié']);
     }
 
-    public static function delete($id) {
-        Etudiant::delete($id);
+    public function delete($id) {
+        $this->etudiantModel->delete($id);
         Flight::json(['message' => 'Étudiant supprimé']);
     }
 }
