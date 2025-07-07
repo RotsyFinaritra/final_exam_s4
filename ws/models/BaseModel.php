@@ -8,6 +8,13 @@ class BaseModel {
         $this->db = getDB();
     }
 
+    protected function save($query, $params = []) {
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($params);
+        return $this->db->lastInsertId();
+    }
+
+
     protected function fetchAll($query, $params = []) {
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);
@@ -22,6 +29,7 @@ class BaseModel {
 
     protected function execute($query, $params = []) {
         $stmt = $this->db->prepare($query);
-        return $stmt->execute($params);
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

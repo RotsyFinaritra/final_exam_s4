@@ -3,10 +3,10 @@ require_once __DIR__ . '/../controllers/PretController.php';
 
 $pretController = new PretController();
 
-Flight::route('GET /prets', [$pretController, 'getAll']);
+Flight::route('GET /prets/list', [$pretController, 'getAll']);
 Flight::route('GET /prets/@id', [$pretController, 'getOne']);
-Flight::route('POST /prets', [$pretController, 'create']);
+Flight::route('POST /prets/create', [$pretController, 'create']);
 Flight::route('PUT /prets/@id', [$pretController, 'update']);
 Flight::route('DELETE /prets/@id', [$pretController, 'delete']);
-
-Flight::start();
+Flight::route('GET /prets/filter', [$pretController, 'getPretsByCriteria']);
+Flight::route('POST /prets/generateTableauAmortissement/@id', [$pretController,'generateAmortissementTable']);

@@ -35,7 +35,8 @@
     <tbody></tbody>
   </table>
 
-  <a href="<?php echo BASE_URL ?>/">Test</a>
+  <a href="<?= BASE_URL ?>/">Test</a>
+  <a href="<?= BASE_URL ?>/prets_view">Prets</a>
 
   <script>
     const apiBase = "http://localhost:8888/tp-flightphp-crud/ws";
