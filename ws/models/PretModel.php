@@ -44,15 +44,15 @@ class PretModel extends BaseModel
             if ($amortissement < 0)
                 $amortissement = 0;
 
-            
+
             $date_paiement = clone $date_debut;
             $date_paiement->modify("+$delai months");
             $date_paiement->modify("+$i months");
-            
+
             $mois = (int) $date_paiement->format('n'); // 1-12
             $annee = (int) $date_paiement->format('Y');
             $capital_restant -= $amortissement;
-            
+
             $stmt->execute([
                 $idPret,
                 $mois,
@@ -64,8 +64,8 @@ class PretModel extends BaseModel
                 round($annuite, 2),
                 $date_paiement->format("Y-m-d")
             ]);
-            
-            
+
+
         }
 
         return true;
@@ -76,33 +76,72 @@ class PretModel extends BaseModel
     public function getAll()
     {
         $sql = "
-            SELECT 
-                p.id,
-                p.date_debut,
-                p.duree,
-                p.date_fin,
-                p.montant,
-                tp.id AS id_type_pret,
-                tp.nom AS type_pret,
-                c.id AS id_client,
-                c.nom AS client_nom,
-                c.prenom AS client_prenom,
-                tr.id AS id_type_remboursement,
-                tr.nom AS type_remboursement
-            FROM pret p
-            JOIN type_pret tp ON p.id_type_pret = tp.id
-            JOIN client c ON p.id_client = c.id
-            LEFT JOIN type_remboursement tr ON p.id_type_remboursement = tr.id
-        ";
+        SELECT 
+            p.id,
+            p.date_debut,
+            p.duree,
+            p.date_fin,
+            p.montant,
+            tp.id AS id_type_pret,
+            tp.nom AS type_pret,
+            c.id AS id_client,
+            c.nom AS client_nom,
+            c.prenom AS client_prenom,
+            tr.id AS id_type_remboursement,
+            tr.nom AS type_remboursement,
+            sp.id AS id_statut_pret,
+            sp.nom AS statut_pret
+        FROM pret p
+        JOIN type_pret tp ON p.id_type_pret = tp.id
+        JOIN client c ON p.id_client = c.id
+        LEFT JOIN type_remboursement tr ON p.id_type_remboursement = tr.id
+        LEFT JOIN (
+            SELECT ps1.id_pret, ps1.id_statut_pret
+            FROM pret_statut_pret ps1
+            INNER JOIN (
+                SELECT id_pret, MAX(date) AS max_date
+                FROM pret_statut_pret
+                GROUP BY id_pret
+            ) ps2 ON ps1.id_pret = ps2.id_pret AND ps1.date = ps2.max_date
+        ) dernier_statut ON p.id = dernier_statut.id_pret
+        LEFT JOIN statut_pret sp ON dernier_statut.id_statut_pret = sp.id
+    ";
 
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getById($id)
-    {
-        return $this->fetchOne("SELECT * FROM pret WHERE id = ?", [$id]);
-    }
+{
+    $sql = "
+        SELECT 
+            p.*,
+            tp.nom AS type_pret,
+            c.nom AS client_nom,
+            c.prenom AS client_prenom,
+            tr.nom AS type_remboursement,
+            sp.id AS id_statut_pret,
+            sp.nom AS statut_pret
+        FROM pret p
+        JOIN type_pret tp ON p.id_type_pret = tp.id
+        JOIN client c ON p.id_client = c.id
+        LEFT JOIN type_remboursement tr ON p.id_type_remboursement = tr.id
+        LEFT JOIN (
+            SELECT ps1.id_pret, ps1.id_statut_pret
+            FROM pret_statut_pret ps1
+            INNER JOIN (
+                SELECT id_pret, MAX(date) AS max_date
+                FROM pret_statut_pret
+                GROUP BY id_pret
+            ) ps2 ON ps1.id_pret = ps2.id_pret AND ps1.date = ps2.max_date
+        ) dernier_statut ON p.id = dernier_statut.id_pret
+        LEFT JOIN statut_pret sp ON dernier_statut.id_statut_pret = sp.id
+        WHERE p.id = ?
+    ";
+
+    return $this->fetchOne($sql, [$id]);
+}
+
 
     public function insert($data)
     {
@@ -163,13 +202,25 @@ class PretModel extends BaseModel
                 c.nom AS client_nom,
                 c.prenom AS client_prenom,
                 tr.id AS id_type_remboursement,
-                tr.nom AS type_remboursement
+                tr.nom AS type_remboursement,
+                sp.id AS id_statut_pret,
+                sp.nom AS statut_pret
             FROM pret p
             JOIN type_pret tp ON p.id_type_pret = tp.id
             JOIN client c ON p.id_client = c.id
             LEFT JOIN type_remboursement tr ON p.id_type_remboursement = tr.id
-            WHERE 1=1
-        ";
+            LEFT JOIN (
+            SELECT ps1.id_pret, ps1.id_statut_pret
+            FROM pret_statut_pret ps1
+            INNER JOIN (
+                SELECT id_pret, MAX(date) AS max_date
+                    FROM pret_statut_pret
+                    GROUP BY id_pret
+                ) ps2 ON ps1.id_pret = ps2.id_pret AND ps1.date = ps2.max_date
+            ) dernier_statut ON p.id = dernier_statut.id_pret
+            LEFT JOIN statut_pret sp ON dernier_statut.id_statut_pret = sp.id
+                WHERE 1=1
+            ";
 
         $params = [];
         if (!empty($criteria['id_type_pret'])) {

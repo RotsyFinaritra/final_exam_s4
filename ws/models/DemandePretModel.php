@@ -59,8 +59,8 @@ class DemandePretModel extends BaseModel
             $stmt = $this->db->prepare("
             INSERT INTO demande_pret (
                 id_client, date_demande, duree_demande, montant, id_statut_demande, id_type_remboursement,
-                assurance, delai
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                assurance, delai, date_debut, id_type_pret
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
             $stmt->execute([
                 $data['id_client'],
@@ -70,7 +70,9 @@ class DemandePretModel extends BaseModel
                 1, 
                 $data['id_type_remboursement'] ?? 2,
                 $data['assurance'],
-                $data['delai']
+                $data['delai'],
+                $data['date_debut'],
+                $data['id_type_pret']
             ]);
 
             $id_demande = $this->db->lastInsertId(); 

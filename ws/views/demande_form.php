@@ -337,6 +337,21 @@
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date_debut">Date debut voulue <span class="required">*</span></label>
+                        <input type="date" id="date_debut" name="date_debut" required>
+                        <div class="field-hint">Date à laquelle le pret commencera</div>
+                    </div>
+                    <div class="form-group">
+                    <label for="id_type_pret">Type de pret <span class="required">*</span></label>
+                    <select id="id_type_pret" name="id_type_pret" required>
+                        <option value="">-- Sélectionner un type de pret --</option>
+                    </select>
+                    <div class="field-hint">Choisissez le type de prêt</div>
+                </div>
+                </div>
+
                 <div class="form-group">
                     <div class="field-hint">La demande sera mise en attente de validation une fois soumise</div>
                 </div>
@@ -370,6 +385,28 @@
                 }
             };
             xhr.send(data);
+        }
+
+        chargerTypesPret();
+
+        function chargerTypesPret() {
+            ajax(
+                "GET",
+                "/type_prets",
+                (data) => {
+                    const select = document.getElementById("id_type_pret");
+                    select.innerHTML = '<option value="">-- Tous --</option>';
+                    data.forEach(type => {
+                        const option = document.createElement("option");
+                        option.value = type.id;
+                        option.textContent = type.nom;
+                        select.appendChild(option);
+                    });
+                },
+                (status, response) => {
+                    console.error(`Erreur ${status}: ${response}`);
+                }
+            );
         }
 
         function showAlert(message, type = 'info') {

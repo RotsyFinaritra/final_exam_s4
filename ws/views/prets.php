@@ -7,22 +7,12 @@
     <link rel="stylesheet" href="<?= STATIC_URL ?>/css/components.css">
     <link rel="stylesheet" href="<?= STATIC_URL ?>/css/forms.css">
     <link rel="stylesheet" href="<?= STATIC_URL ?>/css/tables.css">
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-  </style>
+    <link rel="stylesheet" href="<?= STATIC_URL ?>/css/loan-page.css">
 </head>
 <body>
 
     <?php include"navbar.php"?>
 
-    <h1>Liste des prêts</h1>
-    <a href="<?= BASE_URL ?>/demande_form_view">Ajouter une demande de pret</a>
-    <form action="<?= BASE_URL ?>/prets/generateTableauAmortissement/1" method="post">
-        <button type="submit">Tester</button>
-    </form>
     <h1>Liste des prêts</h1>
 
     <div style="margin-bottom: 10px;">
@@ -57,6 +47,7 @@
         <th>Durée (mois)</th>
         <th>Date Fin</th>
         <th>Montant</th>
+        <th>Statut</th>
       </tr>
     </thead>
     <tbody></tbody>

@@ -81,10 +81,7 @@
                     <label>Date début: <input type="date" id="dateDebut" class="search-input"></label>
                     <label>Date fin: <input type="date" id="dateFin" class="search-input"></label>
                     <select id="statut" class="filter-select">
-                        <option value="">Tous</option>
-                        <option value="1">Non Validé</option>
-                        <option value="2">Validé</option>
-                        <option value="3">Rejetté</option>
+                        <option value="">-- Tous --</option>
                     </select>
                     <button class="btn-primary" onclick="filtrerDemandes()">Filtrer</button>
                     <button class="btn-secondary" onclick="chargerDemandes()">Réinitialiser</button>
@@ -130,7 +127,27 @@
         document.addEventListener('DOMContentLoaded', function() {
             chargerDemandes();
             chargerStatistiques();
+            chargerStatutsDemande();
         });
+
+        function chargerStatutsDemande() {
+            ajax(
+                "GET",
+                "/statut_demandes",
+                null, // il faut mettre null ici pour le 3e paramètre "data"
+                (data) => {
+                    const select = document.getElementById("statut");
+                    select.innerHTML = '<option value="">-- Tous --</option>';
+                    data.forEach(statut => {
+                        const option = document.createElement("option");
+                        option.value = statut.id;
+                        option.textContent = statut.nom;
+                        select.appendChild(option);
+                    });
+                }
+            );
+        }
+
 
         function filtrerDemandes() {
             const dateDebut = document.getElementById('dateDebut').value;
@@ -161,6 +178,8 @@
                 afficherDemandes(data);
                 mettreAJourStatistiques(data);
             });
+
+            chargerStatutsDemande();
         }
 
         function chargerStatistiques() {

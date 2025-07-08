@@ -8,5 +8,5 @@ Flight::route('GET /prets/@id', [$pretController, 'getOne']);
 Flight::route('POST /prets/create', [$pretController, 'create']);
 Flight::route('PUT /prets/@id', [$pretController, 'update']);
 Flight::route('DELETE /prets/@id', [$pretController, 'delete']);
-Flight::route('GET /prets/filter', [$pretController, 'getPretsByCriteria']);
+Flight::route('GET /pret/filter', [$pretController, 'getPretsByCriteria']);
 Flight::route('POST /prets/generateTableauAmortissement/@id', [$pretController,'generateAmortissementTable']);

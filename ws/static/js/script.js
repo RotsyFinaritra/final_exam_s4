@@ -15,6 +15,7 @@ function ajax(method, url, callback, errorCallback, data = null) {
 }
 
 function chargerPrets() {
+    console.log("ato");
     ajax(
         "GET",
         "/prets/list",
@@ -34,6 +35,7 @@ function chargerPrets() {
                         <td>${pret.duree}</td>
                         <td>${pret.date_fin}</td>
                         <td>${pret.montant}</td>
+                        <td>${pret.statut_pret}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -77,7 +79,7 @@ function chargerClients() {
             data.forEach(client => {
                 const option = document.createElement("option");
                 option.value = client.id;
-                option.textContent = `${client.nom} ${client.prenom}`;
+                option.textContent = `${client.client_nom} ${client.client_prenom}`;
                 select.appendChild(option);
             });
         },
@@ -95,6 +97,7 @@ function filtrerPrets() {
         date_fin: document.getElementById('filtreDateFin').value
     };
 
+
     const query = Object.keys(criteria)
         .filter(key => criteria[key])
         .map(key => `${key}=${encodeURIComponent(criteria[key])}`)
@@ -102,7 +105,7 @@ function filtrerPrets() {
 
     ajax(
         "GET",
-        `/prets/filter${query ? '?' + query : ''}`,
+        `/pret/filter${query ? '?' + query : ''}`,
         (data) => {
             const tbody = document.querySelector("#table-prets tbody");
             tbody.innerHTML = "";
@@ -119,6 +122,7 @@ function filtrerPrets() {
                         <td>${pret.duree}</td>
                         <td>${pret.date_fin}</td>
                         <td>${pret.montant}</td>
+                        <td>${pret.statut_pret}</td>
                     `;
                     tbody.appendChild(tr);
                 });

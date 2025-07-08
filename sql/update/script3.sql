@@ -123,6 +123,13 @@ CREATE TABLE demande_pret (
 ALTER TABLE demande_pret
 ADD COLUMN assurance DECIMAL(15,2) DEFAULT 0,
 ADD COLUMN delai INT DEFAULT 0;
+ALTER TABLE demande_pret
+ADD COLUMN id_type_pret INT,
+ADD COLUMN date_debut DATE;
+ALTER TABLE demande_pret
+ADD CONSTRAINT fk_demande_type_pret
+FOREIGN KEY (id_type_pret) REFERENCES type_pret(id);
+
 
 CREATE TABLE demande_statut_demmande (
     id INT AUTO_INCREMENT PRIMARY KEY,

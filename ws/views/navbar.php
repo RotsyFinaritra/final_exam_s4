@@ -5,8 +5,9 @@
         </div>
         <ul class="nav-menu">
             <li><a href="index.html" class="nav-link">Tableau de Bord</a></li>
-            <li><a href="<?= BASE_URL ?>/capital" class="nav-link active">Capital</a></li>
+            <li><a href="<?= BASE_URL ?>/capital" class="nav-link">Capital</a></li>
             <li><a href="<?= BASE_URL ?>/typePret" class="nav-link">Types de Prêt</a></li>
+            <li><a href="<?= BASE_URL ?>/prets_view" class="nav-link">Prêts</a></li>
             <li><a href="<?= BASE_URL ?>/demandeNonValide" class="nav-link">Demandes</a></li>
             <li><a href="interets.html" class="nav-link">Intérêts</a></li>
             <li><a href="simulation.html" class="nav-link">Simulation</a></li>
